@@ -7,7 +7,7 @@ namespace PKReplayPlus.Patches;
 
 /// <summary>
 /// Allows replaying the complete L'Renouille Final Boss Gauntlet in Suikoden II:
-/// 1. Lucia & Karaya Vanguard 6v6 Boss Battle in the 2F Keep (vj02)
+/// 1. Lucia & Highland Soldiers 6v6 Boss Battle in the 2F Keep (vj02)
 /// 2. General Han Cunningham 1v1 Duel at the Outer Fortress Gates (vj01)
 /// 3. Generals Seed & Culgan 6v2 Boss Battle in the Sanctum Hallway (vj07)
 /// 4. Silver Beast Rune / Golden Hydra Final Boss in the Inner Sanctum (vj08)

@@ -7,7 +7,7 @@ A standalone **Suikoden II HD Remaster** (BepInEx 6 IL2CPP) plugin combining pos
 ## Features
 
 1. **Final Boss Gauntlet Replay (`LoopFinalBossGauntlet`, `ResetGauntletOnNextEntry`)**
-   * Automatically resets the 4-stage L'Renouille gauntlet (Lucia & Karaya Vanguard, General Han Cunningham duel, Generals Seed & Culgan, and Silver Beast Rune) upon entering `vj01` after defeating the final boss.
+   * Automatically resets the 4-stage L'Renouille gauntlet (Lucia & Highland Soldiers, General Han Cunningham duel, Generals Seed & Culgan, and Silver Beast Rune) upon entering `vj01` after defeating the final boss.
 2. **Epilogue Leona Restoration (`EnableLeonaPostFinalBoss`)**
    * Restores Leona and party changing at Dunan Castle Tavern (`vk08`) during the post-final-boss epilogue.
 3. **Epilogue Castle Minigames Restoration (`EnableCastleMinigamesPostFinalBoss`)**
