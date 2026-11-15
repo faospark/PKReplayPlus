@@ -10,6 +10,11 @@ public sealed class ModConfiguration
     public ConfigEntry<bool> LoopCliveQuest { get; private set; }
     public ConfigEntry<bool> LoopFinalBossGauntlet { get; private set; }
     public ConfigEntry<bool> ResetGauntletOnNextEntry { get; private set; }
+    public ConfigEntry<bool> ReplayHighlandGuards { get; private set; }
+    public ConfigEntry<bool> ReplayHanCunningham { get; private set; }
+    public ConfigEntry<bool> ReplayLucia { get; private set; }
+    public ConfigEntry<bool> ReplaySeedAndCulgan { get; private set; }
+    public ConfigEntry<bool> ReplayBeastRune { get; private set; }
     public ConfigEntry<bool> EnableLeonaPostFinalBoss { get; private set; }
     public ConfigEntry<bool> EnableCastleMinigamesPostFinalBoss { get; private set; }
 
@@ -36,14 +41,49 @@ public sealed class ModConfiguration
             "01 Replay & Post-Game",
             "LoopFinalBossGauntlet",
             true,
-            "Automatically resets the entire L'Renouille final battle gauntlet (General Han Cunningham duel, Lucia & Karaya vanguard battle, Generals Seed & Culgan battle, and Silver Beast Rune final boss) upon entering L'Renouille outer gates (vj01) when the final boss has been defeated. Allows challenging the complete final sequence indefinitely."
+            "Automatically resets enabled L'Renouille encounters upon entering L'Renouille outer gates (vj01) when the final boss has been defeated. Use the individual Replay* toggles below to choose which encounters reset."
         );
 
         ResetGauntletOnNextEntry = _config.Bind(
             "01 Replay & Post-Game",
             "ResetGauntletOnNextEntry",
             false,
-            "When true, forces a complete reset of the L'Renouille final battle gauntlet (Lucia, Han, Seed & Culgan, Beast Rune) the next time any L'Renouille map is entered, even if the final boss has not yet been defeated. Automatically resets back to false after performing the reset."
+            "When true, forces a reset of all enabled L'Renouille encounters the next time any L'Renouille map is entered, even if the final boss has not yet been defeated. Automatically resets back to false after performing the reset."
+        );
+
+        ReplayHighlandGuards = _config.Bind(
+            "01 Replay & Post-Game",
+            "ReplayHighlandGuards",
+            false,
+            "Include the castle-wide Highland Soldier guard ambushes and outer gate assault segments when resetting L'Renouille."
+        );
+
+        ReplayHanCunningham = _config.Bind(
+            "01 Replay & Post-Game",
+            "ReplayHanCunningham",
+            true,
+            "Include the General Han Cunningham 1v1 duel at the Outer Fortress Gates (vj01) when resetting L'Renouille."
+        );
+
+        ReplayLucia = _config.Bind(
+            "01 Replay & Post-Game",
+            "ReplayLucia",
+            true,
+            "Include the Lucia 6v6 boss battle in the 2F Keep (vj02) when resetting L'Renouille."
+        );
+
+        ReplaySeedAndCulgan = _config.Bind(
+            "01 Replay & Post-Game",
+            "ReplaySeedAndCulgan",
+            true,
+            "Include the Generals Seed & Culgan 6v2 boss battle in the Sanctum Hallway (vj07) when resetting L'Renouille."
+        );
+
+        ReplayBeastRune = _config.Bind(
+            "01 Replay & Post-Game",
+            "ReplayBeastRune",
+            true,
+            "Include the Silver Beast Rune final boss battle in the Inner Sanctum (vj08) when resetting L'Renouille."
         );
 
         EnableLeonaPostFinalBoss = _config.Bind(

@@ -43,20 +43,23 @@ public static class S2FinalBossReplayPatch
     public const int FLAG_BYTE_SANCTUM_96 = 96;
     public const byte FLAG_SANCTUM_PROGRESS_MASK = 0x0F;    // Bits 0-3: Keep/Sanctum gate & Seed/Culgan progression (0xBF -> 0xB0)
 
-    // Byte 220: L'Renouille encounter state bits (Lucia, Han, Beast Rune post-battle)
+    // Byte 220: L'Renouille encounter state bits (Han: 0x03, Guards/assault: 0x38, Lucia: 0x40)
     public const int FLAG_BYTE_LRENOUILLE_220 = 220;
-    public const byte FLAG_LRENOUILLE_220_RESET_MASK = 0x7B; // Bits 0,1,3,4,5,6 (0x3B -> 0x00)
+    public const byte FLAG_HAN_220_RESET_MASK = 0x03;        // Bits 0,1: Han Cunningham defeat / gate bits
+    public const byte FLAG_GUARDS_220_RESET_MASK = 0x38;     // Bits 3,4,5: Castle guard / assault segments
+    public const byte FLAG_LUCIA_220_RESET_MASK = 0x40;      // Bit 6: Lucia defeat bit
 
-    // Byte 221: L'Renouille vanguard / outer gate progression bits
+    // Byte 221: L'Renouille Highland guard / outer gate progression bits
     public const int FLAG_BYTE_LRENOUILLE_221 = 221;
     public const byte FLAG_LRENOUILLE_221_RESET_MASK = 0x90; // Bits 4,7 (0x90 -> 0x00)
 
     // Byte 222 & 223: Outer Gate Cutscene and sequence flags
     public const int FLAG_BYTE_OUTER_GATE_222 = 222;      // All 8 bits track assault cutscene segments
     public const int FLAG_BYTE_OUTER_GATE_223 = 223;
-    public const byte FLAG_GATE_SEQ_MASK = 0x3D;          // Bits 0,2,3,4,5: Outer gate / Han sequence (0x3C -> 0x00)
+    public const byte FLAG_HAN_223_RESET_MASK = 0x01;        // Bit 0: Han outer gate sequence
+    public const byte FLAG_GUARDS_223_RESET_MASK = 0x3C;     // Bits 2,3,4,5: Outer gate guard segments
 
-    // Byte 225: L'Renouille inner boss completion bits
+    // Byte 225: L'Renouille castle guard / inner progression bits
     public const int FLAG_BYTE_LRENOUILLE_225 = 225;
     public const byte FLAG_LRENOUILLE_225_RESET_MASK = 0x05; // Bits 0,2 (0x05 -> 0x00)
 
@@ -117,28 +120,63 @@ public static class S2FinalBossReplayPatch
     }
 
     /// <summary>
-    /// Resets all 4 stages of the L'Renouille final battle gauntlet.
+    /// Resets enabled stages of the L'Renouille final battle gauntlet.
     /// </summary>
     public static void ResetGauntlet(GSD2::GAME_WORK gw, bool logDetails = true)
     {
         if (gw == null || gw.event_flag == null)
             return;
 
-        // Stage 4: Reset Beast Rune final boss & epilogue/ending completion flags
-        gw.event_flag[FLAG_BYTE_STORY_143] = (byte)(gw.event_flag[FLAG_BYTE_STORY_143] & ~(FLAG_BEAST_RUNE_DEFEATED_BIT | FLAG_EPILOGUE_COMPLETE_BIT));
-        gw.event_flag[FLAG_BYTE_ENDING_134] = (byte)(gw.event_flag[FLAG_BYTE_ENDING_134] & ~FLAG_ENDING_134_RESET_MASK);
-        gw.event_flag[FLAG_BYTE_ENDING_144] = (byte)(gw.event_flag[FLAG_BYTE_ENDING_144] & ~FLAG_ENDING_144_RESET_MASK);
-        gw.event_flag[FLAG_BYTE_BEAST_RUNE_98] = (byte)(gw.event_flag[FLAG_BYTE_BEAST_RUNE_98] & ~FLAG_BEAST_RUNE_SANCTUM_BIT);
+        bool replayGuards = Plugin.Config?.ReplayHighlandGuards?.Value ?? false;
+        bool replayHan = Plugin.Config?.ReplayHanCunningham?.Value ?? true;
+        bool replayLucia = Plugin.Config?.ReplayLucia?.Value ?? true;
+        bool replaySeedCulgan = Plugin.Config?.ReplaySeedAndCulgan?.Value ?? true;
+        bool replayBeastRune = Plugin.Config?.ReplayBeastRune?.Value ?? true;
 
-        // Stage 3: Reset Generals Seed & Culgan and Sanctum Door (0xBF -> 0xB0)
-        gw.event_flag[FLAG_BYTE_SANCTUM_96] = (byte)(gw.event_flag[FLAG_BYTE_SANCTUM_96] & ~FLAG_SANCTUM_PROGRESS_MASK);
+        // Beast Rune final boss & epilogue/ending completion flags
+        if (replayBeastRune)
+        {
+            gw.event_flag[FLAG_BYTE_STORY_143] = (byte)(gw.event_flag[FLAG_BYTE_STORY_143] & ~(FLAG_BEAST_RUNE_DEFEATED_BIT | FLAG_EPILOGUE_COMPLETE_BIT));
+            gw.event_flag[FLAG_BYTE_ENDING_134] = (byte)(gw.event_flag[FLAG_BYTE_ENDING_134] & ~FLAG_ENDING_134_RESET_MASK);
+            gw.event_flag[FLAG_BYTE_ENDING_144] = (byte)(gw.event_flag[FLAG_BYTE_ENDING_144] & ~FLAG_ENDING_144_RESET_MASK);
+            gw.event_flag[FLAG_BYTE_BEAST_RUNE_98] = (byte)(gw.event_flag[FLAG_BYTE_BEAST_RUNE_98] & ~FLAG_BEAST_RUNE_SANCTUM_BIT);
+        }
 
-        // Stage 1 & 2: Reset Lucia, General Han Cunningham, and Outer Gate cutscenes
-        gw.event_flag[FLAG_BYTE_LRENOUILLE_220] = (byte)(gw.event_flag[FLAG_BYTE_LRENOUILLE_220] & ~FLAG_LRENOUILLE_220_RESET_MASK);
-        gw.event_flag[FLAG_BYTE_LRENOUILLE_221] = (byte)(gw.event_flag[FLAG_BYTE_LRENOUILLE_221] & ~FLAG_LRENOUILLE_221_RESET_MASK);
-        gw.event_flag[FLAG_BYTE_OUTER_GATE_222] = 0x00;
-        gw.event_flag[FLAG_BYTE_OUTER_GATE_223] = (byte)(gw.event_flag[FLAG_BYTE_OUTER_GATE_223] & ~FLAG_GATE_SEQ_MASK);
-        gw.event_flag[FLAG_BYTE_LRENOUILLE_225] = (byte)(gw.event_flag[FLAG_BYTE_LRENOUILLE_225] & ~FLAG_LRENOUILLE_225_RESET_MASK);
+        // Generals Seed & Culgan and Sanctum Door (0xBF -> 0xB0)
+        if (replaySeedCulgan)
+        {
+            gw.event_flag[FLAG_BYTE_SANCTUM_96] = (byte)(gw.event_flag[FLAG_BYTE_SANCTUM_96] & ~FLAG_SANCTUM_PROGRESS_MASK);
+        }
+
+        // Byte 220 & 223: Granularly clear Guards, Han, and Lucia bits
+        byte mask220 = 0;
+        byte mask223 = 0;
+
+        if (replayGuards)
+        {
+            mask220 |= FLAG_GUARDS_220_RESET_MASK;
+            mask223 |= FLAG_GUARDS_223_RESET_MASK;
+            gw.event_flag[FLAG_BYTE_LRENOUILLE_221] = (byte)(gw.event_flag[FLAG_BYTE_LRENOUILLE_221] & ~FLAG_LRENOUILLE_221_RESET_MASK);
+            gw.event_flag[FLAG_BYTE_OUTER_GATE_222] = 0x00;
+            gw.event_flag[FLAG_BYTE_LRENOUILLE_225] = (byte)(gw.event_flag[FLAG_BYTE_LRENOUILLE_225] & ~FLAG_LRENOUILLE_225_RESET_MASK);
+        }
+
+        if (replayHan)
+        {
+            mask220 |= FLAG_HAN_220_RESET_MASK;
+            mask223 |= FLAG_HAN_223_RESET_MASK;
+        }
+
+        if (replayLucia)
+        {
+            mask220 |= FLAG_LUCIA_220_RESET_MASK;
+        }
+
+        if (mask220 != 0)
+            gw.event_flag[FLAG_BYTE_LRENOUILLE_220] = (byte)(gw.event_flag[FLAG_BYTE_LRENOUILLE_220] & ~mask220);
+
+        if (mask223 != 0)
+            gw.event_flag[FLAG_BYTE_OUTER_GATE_223] = (byte)(gw.event_flag[FLAG_BYTE_OUTER_GATE_223] & ~mask223);
 
         // Ensure fortress assault states remain active
         gw.event_flag[FLAG_BYTE_ASSAULT_95] = (byte)(gw.event_flag[FLAG_BYTE_ASSAULT_95] | FLAG_LRENOUILLE_ASSAULT_95_BIT);
@@ -146,7 +184,7 @@ public static class S2FinalBossReplayPatch
 
         if (logDetails)
         {
-            Plugin.Log.LogInfo($"[Final Boss Replay] Reset complete: " +
+            Plugin.Log.LogInfo($"[Final Boss Replay] Reset complete (Guards={replayGuards}, Han={replayHan}, Lucia={replayLucia}, SeedCulgan={replaySeedCulgan}, BeastRune={replayBeastRune}): " +
                                $"event_flag[143]=0x{gw.event_flag[FLAG_BYTE_STORY_143]:X2}, " +
                                $"event_flag[98]=0x{gw.event_flag[FLAG_BYTE_BEAST_RUNE_98]:X2}, " +
                                $"event_flag[96]=0x{gw.event_flag[FLAG_BYTE_SANCTUM_96]:X2}, " +
