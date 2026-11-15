@@ -17,6 +17,24 @@ A standalone **Suikoden II HD Remaster** (BepInEx 6 IL2CPP) plugin combining pos
 5. **Guardian Blessing (`EnableRepeatStatueRewards`, `AlwaysKeepStatueAssembled`)**
    * Re-arms Guardian Deity blessing rewards when rebuilding/altering the statue at Jude's workshop and preserves the assembled 3D statue model.
 
-## Configuration
+## Requirements
 
-Settings generate in `BepInEx/config/faospark.pkreplayplus.cfg` on launch.
+- **BepInEx 6.0.0-pre.2 IL2CPP**
+- **Suikoden I & II HD Remaster**
+- **Recommended:** [Suikoden Fix](https://github.com/d3xMachina/SuikodenFix) by d3xMachina
+
+## Installation
+
+1. Install [BepInEx 6.0 (Unity IL2CPP x64)](https://github.com/BepInEx/BepInEx/releases/download/v6.0.0-pre.2/BepInEx-Unity.IL2CPP-win-x64-6.0.0-pre.2.zip) into your game root directory.
+2. Place `PKReplayPlus.dll` into `BepInEx/plugins/`.
+3. Launch the game once to generate `BepInEx/config/faospark.pkreplayplus.cfg`.
+
+## Credits & License
+
+- **[faospark](https://github.com/faospark)** — Primary Author & Lead Researcher
+- **[d3xMachina](https://github.com/d3xMachina/Suikoden-Fix)** — Creator of Suikoden-Fix & BepInEx IL2CPP foundation
+- **[asilverthorn](https://github.com/asilverthorn/suikoden_ref)** — Reference tables and internal IDs
+- **Mod Suite:** [Project Kyaro](https://www.nexusmods.com/suikoden1and2hdremaster/mods/6)
+- **Framework:** [BepInEx](https://github.com/BepInEx/BepInEx) & [HarmonyX](https://github.com/BepInEx/HarmonyX)
+
+Distributed under the MIT License.
