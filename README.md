@@ -1,5 +1,12 @@
 # PKReplayPlus
 
+> [!WARNING]
+> **DEPRECATED — Reabsorbed into [PKCore](https://github.com/faospark/PKCore)**
+>
+> All features from `PKReplayPlus` (Final Boss Gauntlet Replay, Epilogue Leona & Castle Minigames Restoration, Clive's Pursuit Quest Replay, and Guardian Blessing repeatable statue rewards) have been merged back into **PKCore** under `[05 Game : Suikoden 2]` in `BepInEx/config/faospark.pkcore.cfg`.
+>
+> Please remove `PKReplayPlus.dll` from `BepInEx/plugins/` when upgrading to the latest **PKCore** release.
+
 **By [faospark](https://github.com/faospark)**
 
 A standalone **Suikoden II HD Remaster** (BepInEx 6 IL2CPP) plugin combining post-game epilogue restorations, repeatable quest/boss gauntlets, and Guardian Deity repeatable rewards.
